@@ -57,7 +57,7 @@ export default {
     skipToContent: "跳转到主要内容",
     openMenu: "打开菜单",
     closeMenu: "关闭菜单",
-    toggleTheme: "切换主题",
+    toggleTheme: "切换「明 / 暗」主题",
     searchPlaceholder: "正在搜索文章...",
     noResults: "没有找到结果",
     goToPreviousPage: "上一篇",
