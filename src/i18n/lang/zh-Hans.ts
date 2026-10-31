@@ -39,16 +39,16 @@ export default {
   },
   pages: {
     tagTitle: "Tag",
-    tagDesc: "所有带有该标签的文章",
+    tagDesc: "所有带有该标签的文章 ...",
 
     tagsTitle: "Tags",
-    tagsDesc: "帖子中使用的所有标签。",
+    tagsDesc: "帖子中使用的所有标签 ...",
 
     postsTitle: "Posts",
-    postsDesc: "我发布的所有文章。",
+    postsDesc: "我发布的所有文章 ...",
 
     archivesTitle: "Archives",
-    archivesDesc: "我归档的所有文章。",
+    archivesDesc: "时间归档 ...",
 
     searchTitle: "Search",
     searchDesc: "搜索任意文章 ...",
