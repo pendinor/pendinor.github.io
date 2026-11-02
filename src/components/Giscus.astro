@@ -1,0 +1,39 @@
+---
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const { comments } = config;
+const t = useTranslations(Astro.currentLocale ?? config.site.lang);
+
+const giscus = comments.provider === "giscus" ? comments : null;
+// giscus cannot load without both node IDs; skip rendering instead of
+// embedding a broken iframe.
+const enabled = Boolean(giscus?.repoId && giscus?.categoryId);
+---
+
+{
+  giscus && enabled && (
+    <section class="mt-12" data-pagefind-ignore aria-label={t.post.comments}>
+      <h2 class="mb-4 text-lg font-semibold">{t.post.comments}</h2>
+      <div
+        class="giscus"
+        data-giscus
+        data-repo={giscus.repo}
+        data-repo-id={giscus.repoId}
+        data-category={giscus.category}
+        data-category-id={giscus.categoryId}
+        data-mapping={giscus.mapping ?? "pathname"}
+        data-strict={giscus.strict ? "1" : "0"}
+        data-reactions-enabled={giscus.reactionsEnabled === false ? "0" : "1"}
+        data-input-position={giscus.inputPosition ?? "top"}
+        data-lang={giscus.lang}
+        data-theme-light={giscus.theme?.light ?? "light"}
+        data-theme-dark={giscus.theme?.dark ?? "dark"}
+      />
+    </section>
+  )
+}
+
+<script>
+  import "@/scripts/giscus";
+</script>

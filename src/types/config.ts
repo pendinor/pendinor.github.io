@@ -92,10 +92,42 @@ interface ShareLink {
   linkTitle?: string;
 }
 
+interface GiscusCommentsConfig {
+  /** Comment provider. Only giscus is supported. */
+  provider: "giscus";
+  /** GitHub repository that stores discussions, e.g. "owner/repo" */
+  repo: string;
+  /** Repository node ID from https://giscus.app */
+  repoId: string;
+  /** Discussion category name. Must exist in the repository. */
+  category: string;
+  /** Discussion category node ID from https://giscus.app */
+  categoryId: string;
+  /**
+   * How a post maps to a discussion thread. Defaults to "pathname".
+   */
+  mapping?: "pathname" | "url" | "title" | "og:title";
+  /** Only match discussions whose mapping value is identical. Defaults to false. */
+  strict?: boolean;
+  /** Show emoji reactions. Defaults to true. */
+  reactionsEnabled?: boolean;
+  /** Comment box position relative to the thread. Defaults to "top". */
+  inputPosition?: "top" | "bottom";
+  /** giscus UI language, e.g. "zh-CN". Defaults to giscus' own default ("en"). */
+  lang?: string;
+  /** Theme names or custom CSS URLs for each colour scheme. */
+  theme?: {
+    light?: string;
+    dark?: string;
+  };
+}
+
 interface AstroPaperConfig {
   site: SiteConfig;
   posts?: PostsConfig;
   features?: FeaturesConfig;
+  /** Post comment section. Omit or use { provider: false } to disable. */
+  comments?: GiscusCommentsConfig | { provider: false };
   /** Social profile links shown in header/footer */
   socials?: SocialLink[];
   /** Share links shown on post detail pages */
@@ -123,6 +155,7 @@ export interface ResolvedAstroPaperConfig {
   features: Required<FeaturesConfig>;
   socials: SocialLink[];
   shareLinks: ShareLink[];
+  comments: GiscusCommentsConfig | { provider: false };
 }
 
 /**

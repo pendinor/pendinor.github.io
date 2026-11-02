@@ -35,4 +35,23 @@ export default defineAstroPaperConfig({
   shareLinks: [
     { name: "mail",     url: "mailto:?subject=See%20this%20post&body=" },
   ],
+  comments: {
+    provider: "giscus",
+    // The repository that stores the discussions. Must be public and have
+    // Discussions enabled, with the giscus app installed:
+    // https://github.com/apps/giscus
+    repo: "pendinor/pendinor.github.io",
+    repoId: "R_kgDOVc_cuA",
+    // Discussion category used for every post. Create it in
+    // Settings → General → Features → Discussions, then copy both IDs from
+    // the configurator at https://giscus.app (repoId is filled in here).
+    category: "Announcements",
+    categoryId: "DIC_kwDOVc_cuM4DKNIu",
+    mapping: "title",
+    strict: true,
+    reactionsEnabled: false,
+    inputPosition: "top",
+    lang: "zh-CN",
+    theme: { light: "fro", dark: "dark" },
+  },
 });
