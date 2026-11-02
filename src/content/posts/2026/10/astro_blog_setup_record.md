@@ -6,23 +6,38 @@ featured: false
 draft: false
 tags:
   - blog
-description: 记录我通过 Astro 框架创建 Github Page 博客的过程
-intendedAudience: 想要通过 Astro 框架、Github Page 在 Windows 上快速创建和维护自己的 Blog 的开发者
+description: 记录我通过 Astro 框架创建 GitHub Pages 博客的过程
+intendedAudience: 想要通过 Astro 框架、GitHub Pages 在 Windows 上快速创建和维护自己的 Blog 的开发者
+modDatetime: 2026-11-02T08:57:18Z
+
 ---
+本篇文章记录我通过 Astro 框架创建自己的静态博客的过程，如果你也想创建自己的博客，可以参考这篇文章，希望对你有所帮助😄。
 
-# 1. 安装 nodejs 等环境
+本篇文章中相关工具的版本信息：
 
-`Astro` 作为前端框架，需要使用 `npm` 等工具进行安装，而 npm 可以通过安装 `nodejs` 运行时获取。在 Windows 上，如果不是前端开发者，不需要维护多个 nodejs 版本，可以直接在 nodejs 的 [官方网站](https://nodejs.org/zh-cn) 下载 `msi` 安装包安装即可。
+| 开发工具 | nodejs   | pnpm    | Astro |
+| ---- | -------- | ------- | ----- |
+| 版本   | v26.13.0 | 12.16.1 | 7.4   |
 
-Windows 上 nodejs 的版本管理工具如 `fnm` 等工具个人感觉很麻烦，对 `CMD`, `powershell` 等各种 `bash` 都要执行 fnm 的初始化命令才能找到 nodejs，对我来说我只能接受 `Linux` 环境下修改 bash 的配置文件，Windows 下感觉不适合这种操作。
+## 1. 安装 nodejs 等环境
 
-安装好 nodejs 的安装包后，npm 就随之安装到机器上了。npm 是 nodejs 的包管理器，在国内使用首先需要换源。在 `C:\User\xxx\` 用户目录下添加 `.npmrc` 文件夹，添加以下内容：
+1. 下载 nodejs 的 msi 安装包进行安装
+
+`Astro` 作为前端框架，需要使用 `npm` 等工具进行安装，而 npm 可以通过安装 `nodejs` 运行时获取。在 Windows 上，如果不是前端开发者，不需要维护多个 nodejs 版本，建议直接在 nodejs 的 [官方网站](https://nodejs.org/zh-cn) 下载 `msi` 安装包安装即可。
+
+2. 更换 npm 软件源
+
+安装好 nodejs 的安装包后，npm 就随之安装到机器上了。npm 是 nodejs 的包管理器，在国内使用首先需要换源。在 `C:\Users\xxx\` 用户目录下添加 `.npmrc` 文件，添加以下内容：
 
 ```
 registry=https://registry.npmmirror.com
 ```
 
-保存后在一个新 Windows 终端执行 `npm config get registry`，以验证是否成功换源。成功换源后建议安装 `pnpm`，即 `npm install -g pnpm` ，通过 pnpm 来管理 nodejs 的包，比 npm 更能节省磁盘空间。安装完成 pnpm 后可以在 `C:\Users\xxx\AppData\Local\pnpm\config` 目录下创建 `config.yaml` ，修改 pnpm 的包存储位置：
+保存后在一个新 Windows 终端执行 `npm config get registry`，以验证是否成功换源。
+
+3. 安装 pnpm 以更好的方式管理安装包
+
+成功换源后建议安装 `pnpm`，即 `npm install -g pnpm` ，通过 pnpm 来管理 nodejs 的包，比 npm 更能节省磁盘空间。安装完成 pnpm 后可以在 `C:\Users\xxx\AppData\Local\pnpm\config` 目录下创建 `config.yaml` ，修改 pnpm 的包存储位置：
 
 ```yaml
 storeDir: E:\pnpm\store
@@ -31,7 +46,14 @@ globalBinDir: E:\pnpm\global\bin
 cacheDir: E:\pnpm\cache
 ```
 
-# 2. 安装 Astro 框架
+创建完成后可以通过以下命令验证：
+
+```bash
+pnpm store path
+```
+
+## 2. 安装 Astro 框架
+
 使用 pnpm 安装 Astro 框架及主题。在你的博客目录中执行以下命令：
 ```bash
 pnpm create astro@latest --template satnaing/astro-paper
@@ -41,9 +63,12 @@ pnpm install
 pnpm dev
 ```
 
-pnpm 就会把 Astro 框架及其 `AstroPaper` 主题下载到当前目录。通过`pnpm dev`即可启动这个示例博客，在浏览器中访问该命令给出的本地网址即可开始浏览该博客。
+pnpm 就会把 Astro 框架及其 `AstroPaper` 主题下载到当前目录。通过 `pnpm dev` 即可启动这个示例博客，在浏览器中访问该命令给出的本地网址即可开始浏览该博客。
 
-# 3. 添加简体中文支持
+## 3. 添加简体中文支持
+
+1. 创建翻译文件
+
 在 Astro 框架中可以通过`src/i18n/lang`(`internationalization`) 文件夹下创建 `zh-Hans.ts` 文件，将英文翻译成中文：
 ```Typescript
 import type { UIStrings } from "../types";
@@ -120,6 +145,8 @@ export default {
 
 ```
 
+2. 修改语言配置
+
 之后修改`/astro.config.ts` 中的配置，将中文设置为默认的语言
 ```Typescript
   i18n: {
@@ -131,37 +158,32 @@ export default {
   },
 ```
 
-然后可以修改 `astro-paper.config.ts` 主题配置，修改为你的个人信息：
-```TypeScript
-  site: {
-    url: "https://pendinor.github.io/",
-    title: "Pendinor's Blog",
-    description: "Pendinor's Blog",
-    author: "pendinor",
-    profile: "https://github.com/pendinor",
-    ogImage: "default-og.jpg",
-    lang: "zh-Hans",
-    timezone: "Asia/Shanghai",
-    dir: "ltr",
-  },
-```
+## 4. 处理字体来源
 
-# 4. 处理字体来源
 Astro 中默认提供了谷歌字体，但是在国内无法正常访问，所以需要将其改为国内的镜像字体网站`googlefonts.cn (fonts.font.im)`。可以让`agent`按照官方文档 (`https://docs.astro.build/en/reference/font-provider-reference/#building-a-font-provider`) 写一个该网站的`Provider`。或者参考[我的仓库](https://github.com/pendinor/pendinor.github.io/blob/main/src/fonts/googlefonts-cn.ts) 
 
-# 5. 禁用 Jekyll 构建
-因为 Github Page 在构建时会使用 `Jekyll` 进行构建，该构建模式会忽略掉`_`开头的文件，而我们的可发布目录中包含 `_astro`，必须禁用 Jekyll 构建防止我们的资源丢失。在 `public` 目录创建一个 `.nojekyll` 文件，重新 `pnpm bulid` 后即可。
+## 5. 禁用 Jekyll 构建
+
+因为 GitHub Pages 在构建时会使用 `Jekyll` 进行构建，该构建模式会忽略掉`_`开头的文件，而我们的可发布目录中包含 `_astro`，必须禁用 Jekyll 构建防止我们的资源丢失。在 `public` 目录创建一个 `.nojekyll` 文件，重新 `pnpm build` 后即可。
 
 ```bash
+# git bash 等终端可以使用 touch 命令，或者直接手动创建一个文件
 touch public/.nojekyll
 ```
 
-# 6. 创建 `Github Page`
-处理好博客框架的基础内容后，就可以尝试发布到 Github Page 了。 在 github 上创建一个公开的 `yourname.github.io` 仓库即可，不需要用两个仓库分别装源码和静态网页，因为这两项可以保存在同一个仓库的不同分支，nodejs 包中还有 `gh-pages` 工具简化发布流程 。创建完成后按github 的提示先将 Astro 框架博客源码推送到这个仓库。
+## 6. 创建 `GitHub Pages`
 
-将源码推送到 `main` 分支后，我们再来创建出目标静态网页。依托 Astro 框架的能力，在源码目录执行 `pnpm build` 即可创建出 `dist` 文件夹。dist 目录是前端项目构建后生成的可发布目录，我们只要把这个可发布目录放到 github 的仓库上，就能通过 Github Page 生成我们自己的博库。
+1. 在 GitHub 上创建 yourname.github.io 仓库
 
-`gh-pages` 工具可以帮助我们完成这一步。首先通过 `pnpm install -g gh-pages` 安装该工具，然后修改 `package.json` 脚本，在 `script` 中添加 `deploy` 的动作命令 `gh-pages -d dist --dotfiles` 。
+处理好博客框架的基础内容后，就可以尝试发布到 GitHub Pages 了。 在 github 上创建一个公开的 `yourname.github.io` 仓库即可，不需要用两个仓库分别装源码和静态网页，因为这两项可以保存在同一个仓库的不同分支，nodejs 包中还有 `gh-pages` 工具简化发布流程 。创建完成后按github 的提示先将 Astro 框架博客源码推送到这个仓库。
+
+2. 构建可发布目录
+
+将源码推送到 `main` 分支后，我们再来创建出目标静态网页。依托 Astro 框架的能力，在源码目录执行 `pnpm build` 即可创建出 `dist` 文件夹。dist 目录是前端项目构建后生成的可发布目录，我们只要把这个可发布目录放到 github 的仓库上，就能通过 GitHub Pages 生成我们自己的博客。
+
+3. 通过 gh-pages 将博客发布到 gh-pages 分支
+
+`gh-pages` 工具可以帮助我们完成这一步。首先通过 `pnpm add -D gh-pages` 安装该工具，其中 `-D` 表示将 gh-pages 加入到 package.json 的 `devDependencies` 中，只在开发时依赖这个包，不会将这个包输出到构建产物。 之后修改 package.json 脚本，在 `script` 中添加 `deploy` 的动作命令 `gh-pages -d dist --dotfiles` 。
 
 ```json
 "scripts": {
@@ -181,12 +203,27 @@ touch public/.nojekyll
 > 其中 **`--dotfiles`** 是必要的，否则 `.nojekyll` 无法上传到发布目录
 
 这样在 `pnpm build` 构建出 dist 目录后，就能通过执行 `pnpm deploy` 将发布目录上传到 Github 了。
-上传到 Github 后，可以在该仓库中的 `Settings->(Code, planning, and automation) Pages` 创建 Github Page，选择 `Deploy from a branch`，用 `gh-pages` 分支进行部署，保存后，`Github Action`就会自动开启部署流程，此时访问 `https://xxx.github.io/` 就能在公网看到你自己的博客了！
 
-# 7. 自动修正发布时间和修改时间
+4. 从 gh-pages 分支创建 Github Pages
+
+上传到 Github 后，可以在该仓库中的 `Settings->(Code, planning, and automation) Pages` 创建 GitHub Pages，选择 `Deploy from a branch`，用 `gh-pages` 分支进行部署，保存后，`GitHub Actions`就会自动开启部署流程，等待其完成后访问 `https://xxx.github.io/` 就能在公网看到你自己的博客了！
+
+>[!Warning]
+>如果你的仓库也是按 `yourname.github.io` 这种格式（即用户页）创建的，就不需要修改网站的 `base`。如果你是 `yourname.github.io/blog` 这样的项目页创建的，还需要修改网站的 `base` ，否则全站资源都会 `404`
+
+## 7. 自动修正发布时间和修改时间
+
 Astro 强制每篇文章都要写 `pubDatetime` 发布时间，其实我觉得让用户写时间有点奇怪，应该自动生成发布时间比较符合直觉。可以让 agent 写一个脚本，在 `pnpm build` 时自动按官方要求的格式`YYYY-MM-DDTHH:mm:ssZ` 修改发布时间和修改时间。发布时间可以是添加到 git 仓库的时间，这样写完文章后不用考虑时间该写什么了。你也可以参考 [我的仓库](https://github.com/pendinor/pendinor.github.io/blob/main/scripts/sync-post-datetime.mjs) 
 
 
-# 8. 使用 Obsidian 撰写博客
+## 8. 使用 Obsidian 撰写博客
 
-Astro 框架中的文章需要放到`src/content/posts`目录下。我觉得用`Obsidian`在这个目录或者上一层目录创建 Obsidian 知识库比较方便，因为 Obsidian 的 markdown 能实时渲染，和 `typora` 差不多，且默认资源目录形式、能够创建模板，跟写博客很搭，不用再去管 Astro 框架的源码了。
+Astro 框架中的文章需要放到 `src/content/posts` 目录下。我觉得用`Obsidian`在这个目录或者上一层目录创建 Obsidian 知识库比较方便，因为 Obsidian 的 markdown 能实时渲染，和 `typora` 差不多，且默认资源目录形式、能够创建模板，跟写博客很搭，不用再去管 Astro 框架的源码了。
+
+## 参考链接
+
+- [AstroPaper 主题展示]([AstroPaper](https://astro-paper.pages.dev/))
+- [Astro 框架官网](https://astro.build/)
+- [GitHub Pages 文档 - GitHub 文档](https://docs.github.com/zh/pages)
+- [tschaub/gh-pages: General purpose task for publishing files to a gh-pages branch on GitHub](https://github.com/tschaub/gh-pages)
+- [Obsidian - Sharpen your thinking](https://obsidian.md/)
